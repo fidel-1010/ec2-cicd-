@@ -46,7 +46,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
-          
+
       - name: List current directory
         run: |
           echo "Current location:"
@@ -55,16 +55,16 @@ jobs:
           ls -R
 
       - name: Terraform Init
-        working-directory: ./infrastructure/terraform
+        working-directory: infrastructure/terraform
         run: terraform init -upgrade
 
       - name: Select Terraform Workspace
-        working-directory: ./infrastructure/terraform
+        working-directory: infrastructure/terraform
         run: |
           terraform workspace select $ENVIRONMENT || terraform workspace new $ENVIRONMENT
 
       - name: Terraform Apply
-        working-directory: ./infrastructure/terraform
+        working-directory: infrastructure/terraform
         env:
           TF_IN_AUTOMATION: true
         run: terraform apply -auto-approve -input=false -var="ENV_PREFIX=$ENVIRONMENT"
